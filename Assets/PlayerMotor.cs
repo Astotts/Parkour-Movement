@@ -104,7 +104,7 @@ public class PlayerMotor : MonoBehaviour
         }
         //Movement after wall bouncing
         else if(!controller.isGrounded && !holdingWall && leptFromWall){
-            airTime -= 0.00002f;
+            airTime -= 0.0002f * Time.deltaTime;
             airMoveVector.y = verticalVelocity;
             controller.Move(((airMoveVector * airTime) + (Vector3)((Vector2)moveVector / 2)) * Time.deltaTime);
         }
@@ -116,7 +116,7 @@ public class PlayerMotor : MonoBehaviour
 
     private void OnControllerColliderHit (ControllerColliderHit hit)
     {
-        if(!controller.isGrounded && hit.normal.y < 0.1f && !leptFromWall)
+        if(!controller.isGrounded && hit.normal.y < 0.1f)
         {
             //Debug.DrawRay(hit.point, hit.normal, Color.red, 0.25f);
             //While against wall in the air
