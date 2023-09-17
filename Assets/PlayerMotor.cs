@@ -1,17 +1,19 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMotor : MonoBehaviour
 {
+    [SerializeField] Transform start;
+
     private Vector3 moveVector, airMoveVector, lastMove;
     [SerializeField] private float speed = 10;
     private bool holdingWall = false;
     private bool leptFromWall = false;
 
     private float verticalVelocity;
-    [SerializeField] private float jumpforce = 8f;
-    [SerializeField] private float gravity = 30f;
+    [SerializeField] private float jumpforce = 12f;
+    [SerializeField] private float gravity = 25f;
 
     private float airTime;
     
@@ -33,6 +35,7 @@ public class PlayerMotor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         //Vect3 = right of the character * horizonal axis (returns 1 or -1 depending on if a or d is pressed)
         moveVector = transform.right * Input.GetAxisRaw("Horizontal") + transform.forward * Input.GetAxisRaw("Vertical");
 
@@ -104,7 +107,7 @@ public class PlayerMotor : MonoBehaviour
         }
         //Movement after wall bouncing
         else if(!controller.isGrounded && !holdingWall && leptFromWall){
-            airTime -= 0.0002f * Time.deltaTime;
+            airTime -= 0.00002f;
             airMoveVector.y = verticalVelocity;
             controller.Move(((airMoveVector * airTime) + (Vector3)((Vector2)moveVector / 2)) * Time.deltaTime);
         }
@@ -127,6 +130,13 @@ public class PlayerMotor : MonoBehaviour
                 startTimer = true;
                 timer = 0;
             }
+        }
+    }
+
+    void LateUpdate(){
+        if(this.transform.position.y < -30){
+            Debug.Log("testing");
+            transform.position = start.position;
         }
     }
 }
